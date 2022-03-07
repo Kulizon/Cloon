@@ -1,0 +1,22 @@
+{
+  "name": "cloon-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "nanoid": "^3.3.1",
+    "socket-io": "^1.0.0",
+    "socket.io": "^4.4.1",
+    "typescript": "^4.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
