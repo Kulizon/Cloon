@@ -5,7 +5,7 @@ const app = express();
 const cors = require("cors");
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
-  cors: { origin: "https://cloon-53e85.web.app/", methods: ["GET", "POST"] },
+  cors: { origin: "*", methods: ["GET", "POST"] },
 });
 
 app.use(cors());
