@@ -4,7 +4,9 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const server = require("http").Server(app);
-const io = require("socket.io")(server, { cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] } });
+const io = require("socket.io")(server, {
+  cors: { origin: "https://intense-hamlet-12562.herokuapp.com/", methods: ["GET", "POST"] },
+});
 
 app.use(cors());
 
