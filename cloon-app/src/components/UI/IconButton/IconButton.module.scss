@@ -1,0 +1,50 @@
+@import "./../../../scss/colors.scss";
+
+.button {
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border-radius: 5px;
+  transition: 0.2s;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    fill: $gray-1;
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: 0.2s;
+  }
+
+  &:hover {
+    background: $gray-1;
+    cursor: pointer;
+
+    svg {
+      fill: $dark-5;
+    }
+  }
+
+  &.highlighted {
+    background: none;
+    padding: 0.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid $dark-3;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    &:hover {
+      background: $dark-3;
+
+      svg {
+        fill: $gray-2;
+      }
+    }
+  }
+}

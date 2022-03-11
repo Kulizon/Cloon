@@ -1,0 +1,16 @@
+@import "./../../../scss/colors.scss";
+
+.input {
+  width: 100%;
+  font-size: 1rem;
+  margin-right: 2rem;
+  padding: 0.2rem 0.5rem;
+  background: none;
+  color: $gray-2;
+  border-bottom: 1px solid $dark-4;
+  padding-bottom: 0.5rem;
+
+  &::placeholder {
+    color: rgba($gray-2, 0.5);
+  }
+}

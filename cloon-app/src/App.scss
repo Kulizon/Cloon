@@ -1,0 +1,14 @@
+@import "./scss/colors.scss";
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  background: linear-gradient(-120deg, rgba($dark-1, 0.8), $dark-1);
+}
+
+body {
+  overflow: hidden;
+  background: $dark-1;
+}

@@ -1,0 +1,50 @@
+.forms {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2rem;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    width: 10rem;
+  }
+
+  form {
+    width: 100%;
+
+    &:last-of-type {
+      grid-column: span 2;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+
+      input {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      button {
+        align-self: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    form {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+
+      &:last-of-type {
+        margin-top: 1rem;
+      }
+    }
+  }
+}

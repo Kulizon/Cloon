@@ -1,0 +1,41 @@
+@import "./../../scss/colors.scss";
+
+.main {
+  background: $dark-2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  border-right: 2px solid $dark-4;
+  position: relative;
+  z-index: 10;
+
+  > div {
+    justify-self: center;
+  }
+}
+
+.logo {
+  position: absolute;
+  top: 4rem;
+  h1 {
+    font-size: 3rem;
+    color: $light-1;
+    font-weight: 400;
+  }
+
+  h6 {
+    font-size: 1rem;
+    color: rgba($gray-2, 0.5);
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 800px) {
+  .main {
+    height: 100%;
+    align-items: center;
+    margin: auto;
+    border: none;
+  }
+}

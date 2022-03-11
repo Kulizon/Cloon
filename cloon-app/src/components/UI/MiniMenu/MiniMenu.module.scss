@@ -1,0 +1,27 @@
+@import "./../../../scss/colors.scss";
+
+.menu {
+  position: relative;
+  z-index: 100;
+
+  > div {
+    background: $dark-3;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 100;
+    padding: 1rem;
+    bottom: 3rem;
+    right: 0;
+  }
+}
+
+.backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: none;
+  z-index: 50;
+  opacity: 0;
+}

@@ -1,0 +1,75 @@
+@import "./../../../../scss/colors.scss";
+
+.hidden {
+  opacity: 0;
+}
+
+.window {
+  width: 100%;
+  background: $dark-4;
+  position: relative;
+  border-radius: 5px;
+  padding: 1rem;
+  max-width: 800px;
+  margin: auto;
+
+  h3 {
+    width: 100%;
+    position: absolute;
+    bottom: 50%;
+    transform: translateY(50%);
+    text-align: center;
+    color: $gray-1;
+  }
+
+  video {
+    width: 100%;
+    background: $dark-2;
+  }
+
+  > div {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+
+    > div {
+      left: initial;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      button:first-of-type {
+        margin-bottom: 1rem;
+      }
+    }
+
+    > button {
+      margin-left: 1rem;
+      background: $dark-3;
+
+      svg {
+        fill: $gray-1;
+      }
+
+      &:hover {
+        background: $dark-4;
+
+        svg {
+          fill: $gray-2;
+        }
+      }
+    }
+
+    h4 {
+      color: $light-1;
+    }
+  }
+}
+
+@media (max-width: 1300px) {
+  .window {
+    width: 100%;
+    max-width: 600px;
+  }
+}

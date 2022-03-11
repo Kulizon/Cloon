@@ -1,0 +1,17 @@
+@import "./../../../scss/colors.scss";
+
+.menu {
+  background: $dark-2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-left: 2px $dark-4 solid;
+  border-bottom: 2px $dark-4 solid;
+}
+
+@media (max-width: 500px) {
+  .menu {
+    padding: 0.5rem;
+  }
+}

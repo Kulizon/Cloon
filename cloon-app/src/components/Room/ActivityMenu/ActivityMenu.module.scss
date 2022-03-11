@@ -1,0 +1,27 @@
+@import "./../../../scss/colors.scss";
+
+.menu {
+  background: $dark-1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0.5rem;
+  border-right: 2px $dark-4 solid;
+
+  form button {
+    margin-bottom: 1rem;
+  }
+
+  div {
+    border-top: 1px $dark-4 solid;
+    padding-top: 1rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+

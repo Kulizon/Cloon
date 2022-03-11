@@ -1,0 +1,13 @@
+@import './../../../scss/colors.scss';
+
+.board {
+  display: flex;
+  flex-direction: column;
+
+  canvas {
+    background: $light-1;
+    border-radius: 5px;
+  }
+}
+
+

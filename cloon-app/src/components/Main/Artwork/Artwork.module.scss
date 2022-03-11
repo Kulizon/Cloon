@@ -1,0 +1,18 @@
+@import "./../../../scss/colors.scss";
+
+.artwork {
+  position: absolute;
+  right: -10rem;
+  bottom: -10rem;
+  font-size: 2rem;
+  overflow: hidden;
+  color: $dark-3;
+  z-index: 5;
+  pointer-events: none;
+}
+
+@media (max-width: 800px) {
+  .artwork {
+    display: none;
+  }
+}

@@ -1,0 +1,32 @@
+@import "./../../../scss/colors.scss";
+
+.menu {
+  background: $dark-3;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+    row-gap: 2rem;
+    padding: 1rem 2rem;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    li {
+      margin: auto;
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 1300px) {
+  .menu ul {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}

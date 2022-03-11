@@ -1,0 +1,39 @@
+@import "./../../../../scss/colors.scss";
+
+.message {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+  align-self: flex-start;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  span {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: $light-1;
+  }
+
+  p {
+    background: $dark-4;
+    align-self: flex-start;
+    border-radius: 20px 20px 20px 0;
+    padding: 0.5rem 1.25rem;
+    color: $gray-2;
+  }
+
+  &.not-user {
+    align-self: flex-end;
+
+    p {
+      border-radius: 20px 20px 0 20px;
+    }
+  }
+}

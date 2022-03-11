@@ -1,0 +1,28 @@
+@import "./../../../../scss/colors.scss";
+
+.controls {
+  width: 100%;
+  background: $dark-2;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+
+  div {
+    display: flex;
+    button {
+      margin-left: 2rem;
+    }
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    color: $light-1;
+
+    span {
+      font-size: 0.9rem;
+      color: $light-2;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+@import "./../../../scss/colors.scss";
+
+.button {
+  border: 1px solid $dark-4;
+  background: none;
+  border-radius: 5px;
+  color: $gray-2;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  transition: 0.2s;
+
+  &:hover {
+    background: $dark-4;
+    cursor: pointer;
+  }
+}
