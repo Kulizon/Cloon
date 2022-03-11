@@ -112,6 +112,6 @@ io.on("connect", (socket: Socket) => {
   });
 });
 
-server.listen(4000, () => {
+server.listen(process.env.PORT || 4000, () => {
   console.log("Listening on port 4000...");
 });
