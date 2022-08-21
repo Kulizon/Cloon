@@ -70,6 +70,10 @@ io.on("connect", (socket: Socket) => {
     socket.to(roomID).emit("new-message", { ...message });
   });
 
+  socket.on("clear-messages", (roomID: string) => {
+    socket.to(roomID).emit("clear-messages");
+  });
+
   // audio && video
 
   socket.on("unmute-mic", (roomID: string) => {
