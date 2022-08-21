@@ -23,9 +23,9 @@ const App = () => {
     if (socket) return;
 
     const connect = async () => {
-      //http://localhost:4000
-      //https://afternoon-ravine-52264.herokuapp.com/
-      const receivedSocket = await io("http://localhost:4000");
+      // http://localhost:4000
+      // https://cloon.herokuapp.com/
+      const receivedSocket = await io("https://cloon.herokuapp.com/");
       setSocket(receivedSocket);
     };
 

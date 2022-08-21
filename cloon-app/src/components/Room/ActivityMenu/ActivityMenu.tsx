@@ -6,7 +6,7 @@ import { SocketContext } from "../../../App";
 import styles from "./ActivityMenu.module.scss";
 
 import FortuneWheelIcon from "../../../assets/icons/ActivityMenu/FortuneWheel";
-import PenIcon from "../../../assets/icons/ActivityMenu/Pen";
+// import PenIcon from "../../../assets/icons/ActivityMenu/Pen";
 import ExitIcon from "../../../assets/icons/ActivityMenu/Exit";
 import IconButton from "../../UI/IconButton/IconButton";
 import ChatIcon from "../../../assets/icons/ActivityMenu/Chat";
@@ -35,9 +35,9 @@ const ActivityMenu = () => {
         <IconButton id="wheel">
           <FortuneWheelIcon></FortuneWheelIcon>
         </IconButton>
-        <IconButton id="board">
+        {/* <IconButton id="board">
           <PenIcon></PenIcon>
-        </IconButton>
+        </IconButton> */}
       </form>
       <div>
         <Link to="/">
