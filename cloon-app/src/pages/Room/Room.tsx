@@ -17,6 +17,7 @@ interface Message {
 
 const Room = () => {
   const socket = useContext(SocketContext);
+
   const navigate = useNavigate();
   const { roomID } = useParams();
 
@@ -33,12 +34,22 @@ const Room = () => {
       return;
     }
 
+    socket.on("clear-messages", () => {
+      setMessages([]);
+    });
+
+    socket.on("user-connected", () => {
+      setSelectedActivity("");
+    });
+
     socket.on("select-activity", (activity: string) => {
       setSelectedActivity(activity);
     });
 
     return () => {
       socket.emit("disconnect-user", currentRoomID.current);
+      socket.emit("clear-messages", currentRoomID.current);
+      socket.removeAllListeners();
     };
   }, [roomID, socket, navigate]);
 
@@ -49,7 +60,7 @@ const Room = () => {
   }, []);
 
   if (!socket) return <></>;
-  
+
   return (
     <main
       className={`${styles.main} ${

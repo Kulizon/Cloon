@@ -1,11 +1,11 @@
 @import "./../../../scss/colors.scss";
+@import "./../../../scss/mixins.scss";
 
 .menu {
   background: $dark-3;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: auto 5rem;
 
   ul {
     display: grid;
@@ -16,6 +16,9 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    overflow-y: auto;
+
+    @include scrollbarMixin;
 
     li {
       margin: auto;

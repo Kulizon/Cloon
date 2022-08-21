@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router";
-import { SocketContext, PeerIDContext } from "../../../App";
+import { SocketContext, PeerIDContext, StreamContext } from "../../../App";
 
 import styles from "./RoomForms.module.scss";
 
@@ -11,6 +11,7 @@ const RoomForms = () => {
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
   const peerID = useContext(PeerIDContext);
+  const userStream = useContext(StreamContext);
 
   const createNewRoomHandler = (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault();
@@ -52,16 +53,22 @@ const RoomForms = () => {
 
   return (
     <div className={styles.forms}>
-      <form onSubmit={createNewRoomHandler}>
-        <Button>New Room</Button>
-      </form>
-      <form onSubmit={joinRandomRoomHandler}>
-        <Button>Random Room</Button>
-      </form>
-      <form onSubmit={joinRoomHandler}>
-        <TextInput id="roomID" placeholder="Type room ID..."></TextInput>
-        <Button>Join Room</Button>
-      </form>
+      {userStream ? (
+        <>
+          <form onSubmit={createNewRoomHandler}>
+            <Button>New Room</Button>
+          </form>
+          <form onSubmit={joinRandomRoomHandler}>
+            <Button>Random Room</Button>
+          </form>
+          <form onSubmit={joinRoomHandler}>
+            <TextInput id="roomID" placeholder="Type room ID..."></TextInput>
+            <Button>Join Room</Button>
+          </form>
+        </>
+      ) : (
+        <h2>Please connect either audio or video device...</h2>
+      )}
     </div>
   );
 };

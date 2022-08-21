@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router";
-import { SocketContext, PeerIDContext } from "../../../App";
+import { SocketContext, StreamContext } from "../../../App";
 import { peer } from "../../../App";
 
 import styles from "./TalkingBox.module.scss";
@@ -10,35 +9,13 @@ import Controls from "./Controls/Controls";
 
 const TalkingBox = () => {
   const socket = useContext(SocketContext);
-  const peerID = useContext(PeerIDContext);
-  const { roomID } = useParams();
-  const [userStream, setUserStream] = useState<MediaStream>();
+  const userStream = useContext(StreamContext);
   const [callerStream, setCallerStream] = useState<MediaStream | undefined>();
 
   const [callerPeer, setCallerPeer] = useState<any>();
 
   const [isCallerMicOn, setIsCallerMicOn] = useState(true);
   const [isCallerCamOn, setIsCallerCamOn] = useState(true);
-
-  useEffect(() => {
-    const connectDevices = async () => {
-      let stream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      } catch (e) {
-        console.log(e);
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-
-      setUserStream(stream);
-    };
-
-    connectDevices();
-  }, []);
 
   useEffect(() => {
     peer.on("call", (call) => {
@@ -50,14 +27,16 @@ const TalkingBox = () => {
         setCallerStream(receivedStream);
       });
     });
-  }, [userStream]);
+
+    // prevent from subscribing multiple times
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
+    if (!socket) return;
+
     socket.on("user-connected", (clients: [], peerID: string) => {
-      if (!userStream) return;
-
       const call = peer.call(peerID, userStream);
-
       setCallerPeer(call);
 
       call.on("stream", (receivedStream) => {
@@ -68,7 +47,10 @@ const TalkingBox = () => {
         setCallerStream(undefined);
       });
     });
-  }, [socket, userStream, roomID, peerID]);
+
+    // prevent from subscribing multiple times
+    // eslint-disable-next-line
+  }, [socket]);
 
   useEffect(() => {
     socket.on("unmute-mic", () => {
@@ -86,14 +68,15 @@ const TalkingBox = () => {
     socket.on("mute-cam", () => {
       setIsCallerCamOn(false);
     });
+  }, [socket]);
 
+  useEffect(() => {
     socket.on("user-disconnected", () => {
-      console.log(callerPeer);
-
       if (!callerPeer) return;
 
       callerPeer.close();
       setCallerStream(undefined);
+      setCallerPeer(undefined);
     });
   }, [socket, callerPeer]);
 
@@ -101,9 +84,9 @@ const TalkingBox = () => {
     <div className={styles.menu}>
       <ul>
         <li>
-          <CameraWindow stream={userStream} muted isVideoHidden={false}></CameraWindow>
+          <CameraWindow stream={userStream} muted hiddenOptions isVideoHidden={false}></CameraWindow>
         </li>
-        {callerStream && (
+        {callerPeer && (
           <li>
             <CameraWindow stream={callerStream} muted={!isCallerMicOn} isVideoHidden={!isCallerCamOn}></CameraWindow>
           </li>

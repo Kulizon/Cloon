@@ -10,7 +10,12 @@ import MicOnIcon from "../../../../assets/icons/Controls/MicOn";
 import CamOffIcon from "../../../../assets/icons/Controls/CamOff";
 import CamOnIcon from "../../../../assets/icons/Controls/CamOn";
 
-const CameraWindow = (props: { stream: MediaStream | undefined; muted: boolean; isVideoHidden: boolean }) => {
+const CameraWindow = (props: {
+  stream: MediaStream | undefined;
+  muted?: boolean;
+  isVideoHidden: boolean;
+  hiddenOptions?: boolean;
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -50,7 +55,7 @@ const CameraWindow = (props: { stream: MediaStream | undefined; muted: boolean; 
         className={!isCamOn || props.isVideoHidden ? styles.hidden : ""}
       ></video>
 
-      {!props.muted && (
+      {!props.hiddenOptions && (
         <MiniMenu activateButtonContent={<OptionsIcon></OptionsIcon>}>
           <div>
             {isMicOn ? (

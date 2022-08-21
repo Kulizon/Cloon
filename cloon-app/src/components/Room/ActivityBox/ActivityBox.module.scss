@@ -1,4 +1,5 @@
 @import "./../../../scss/colors.scss";
+@import "./../../../scss/mixins.scss";
 
 .menu {
   background: $dark-2;
@@ -8,6 +9,11 @@
   padding: 1rem;
   border-left: 2px $dark-4 solid;
   border-bottom: 2px $dark-4 solid;
+  position: relative;
+  z-index: 102;
+  overflow-y: auto;
+
+  @include scrollbarMixin;
 }
 
 @media (max-width: 500px) {

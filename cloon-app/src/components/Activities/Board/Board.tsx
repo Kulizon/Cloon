@@ -8,7 +8,6 @@ import styles from "./Board.module.scss";
 import BoardOptions from "./BoardOptions/BoardOptions";
 
 export interface CanvasOptions {
-  lineOpacity: number;
   drawingColor: string;
   lineWidth: number;
 }
@@ -24,7 +23,6 @@ const Board = () => {
 
   const [isDrawing, setIsDrawing] = useState(false);
   const [options, setOptions] = useState<CanvasOptions>({
-    lineOpacity: 1,
     drawingColor: "red",
     lineWidth: 5,
   });
@@ -40,10 +38,6 @@ const Board = () => {
       canvas!.width = window.innerWidth * 0.44;
       canvas!.height = window.innerWidth * 0.44 * 0.5;
     }
-
-    //
-    // maybe draw on resize so canvas is not lost
-    //
   });
 
   useEffect(() => {
@@ -69,9 +63,20 @@ const Board = () => {
       decodedCanvas.src = encodedCanvas;
     });
     socket.on("clear-canvas", () => {
-      contextRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+      if (!canvasRef.current) return;
+
+      // context.current is null without timeout
+      setTimeout(() => {
+        contextRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+      }, 1);
     });
   }, [socket]);
+
+  const clearCanvasHandler = () => {
+    contextRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+
+    socket.emit("clear-canvas", roomID);
+  };
 
   const drawHandler = (e: any, drawDot?: boolean) => {
     if ((!isDrawing && !drawDot) || !contextRef.current) return;
@@ -84,14 +89,22 @@ const Board = () => {
     ctx.lineCap = "round";
     ctx.strokeStyle = options.drawingColor;
     ctx.lineWidth = options.lineWidth;
-    ctx.globalAlpha = options.lineOpacity;
+    ctx.globalAlpha = 1;
 
     ctx.beginPath();
     ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-
-    const encodedCanvas = canvasRef.current?.toDataURL();
-    socket.emit("draw-canvas", encodedCanvas, roomID);
   };
+
+  useEffect(() => {
+    if (!isDrawing) return;
+
+    const interval = setInterval(() => {
+      const encodedCanvas = canvasRef.current?.toDataURL();
+      socket.emit("draw-canvas", encodedCanvas, roomID);
+    }, 250);
+
+    if (!isDrawing) clearInterval(interval);
+  }, [isDrawing, roomID, socket]);
 
   const startDrawHandler = async (e: any) => {
     const { offsetX: x, offSetY: y } = e;
@@ -103,8 +116,8 @@ const Board = () => {
   };
 
   const endDrawHandler = () => {
-    contextRef.current?.closePath();
     setIsDrawing(false);
+    contextRef.current?.closePath();
   };
 
   const onChangeOptions = (receivedOptions: CanvasOptions) => {
@@ -120,7 +133,7 @@ const Board = () => {
         onMouseMove={drawHandler}
         onMouseLeave={endDrawHandler}
       ></canvas>
-      <BoardOptions canvasRef={canvasRef} contextRef={contextRef} onChangeOptions={onChangeOptions}></BoardOptions>
+      <BoardOptions clearCanvasHandler={clearCanvasHandler} onChangeOptions={onChangeOptions}></BoardOptions>
     </div>
   );
 };

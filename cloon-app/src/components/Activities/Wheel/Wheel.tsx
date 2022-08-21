@@ -1,5 +1,5 @@
 import { SocketContext } from "../../../App";
-import React, { useState, useRef, useContext, useEffect, SyntheticEvent } from "react";
+import React, { useState, useContext, useEffect, SyntheticEvent } from "react";
 import { useParams } from "react-router";
 
 import styles from "./Wheel.module.scss";
@@ -9,8 +9,9 @@ import IconButton from "../../UI/IconButton/IconButton";
 import PlusIcon from "../../../assets/icons/WheelOptions/Plus";
 import CheckIcon from "../../../assets/icons/WheelOptions/Check";
 import TextInput from "../../UI/TextInput/TextInput";
+import XMarkIcon from "../../../assets/icons/ActivityMenu/XMark";
 
-const getRandomSpinValue = () => Math.floor(Math.random() * 1500 + 500);
+const getRandomSpinValue = () => Math.floor(Math.random() * 3000 + 1500);
 
 interface WheelStyles {
   deg: number;
@@ -55,7 +56,6 @@ const Wheel = () => {
   const socket = useContext(SocketContext);
   const { roomID } = useParams();
 
-  const [rotateValue, setRotateValue] = useState(getRandomSpinValue());
   const [options, setOptions] = useState<string[]>([
     "Option 1",
     "Option 2",
@@ -64,19 +64,20 @@ const Wheel = () => {
     "Option 5",
     "Option 6",
   ]);
-  const wheelRef = useRef<HTMLDivElement>(null);
+  const [wheelRotateValue, setWheelRotateValue] = useState(Number);
 
   const spinHandler = () => {
-    wheelRef.current!.style.transform = `rotate(${rotateValue}deg)`;
+    const spinValue = getRandomSpinValue();
 
-    socket.emit("spin-wheel", rotateValue, roomID);
-    setRotateValue((prevValue) => prevValue + getRandomSpinValue());
+    console.log(spinValue);
+
+    setWheelRotateValue(spinValue);
+    socket.emit("spin-wheel", spinValue, roomID);
   };
 
   useEffect(() => {
     socket.on("spin-wheel", (receivedRotateValue: number) => {
-      wheelRef.current!.style.transform = `rotate(${receivedRotateValue}deg)`;
-      setRotateValue((prevValue) => prevValue + getRandomSpinValue());
+      setWheelRotateValue(receivedRotateValue);
     });
     socket.on("change-wheel-options", (receivedOptions: string[]) => {
       setOptions(receivedOptions);
@@ -113,7 +114,7 @@ const Wheel = () => {
       <div className={styles.wheel}>
         <button onClick={spinHandler}>Spin</button>
         <span className={styles.arrow}></span>
-        <div className={styles.container} ref={wheelRef}>
+        <div className={styles.container} style={{ transform: `rotate(${wheelRotateValue}deg)` }}>
           {options.map((option, index) => {
             return (
               <div
@@ -132,7 +133,7 @@ const Wheel = () => {
         </div>
       </div>
       <div className={styles["options-menu"]}>
-        <MiniMenu activateButtonContent={<PlusIcon></PlusIcon>}>
+        <MiniMenu activateButtonContent={<PlusIcon></PlusIcon>} deactivateButtonContent={<XMarkIcon></XMarkIcon>}>
           <>
             <ul>
               {options.map((o) => (

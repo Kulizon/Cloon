@@ -1,7 +1,5 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { CanvasOptions } from "../Board";
-import { SocketContext } from "../../../../App";
-import { useParams } from "react-router";
 
 import styles from "./BoardOptions.module.scss";
 
@@ -9,21 +7,14 @@ import MiniMenu from "../../../UI/MiniMenu/MiniMenu";
 import IconButton from "../../../UI/IconButton/IconButton";
 import DrawingColorIcon from "../../../../assets/icons/BoardOptions/DrawingColor";
 import LineWidthIcon from "../../../../assets/icons/BoardOptions/LineWidth";
-import LineOpacityIcon from "../../../../assets/icons/BoardOptions/LineOpacity";
 import TrashIcon from "../../../../assets/icons/BoardOptions/Trash";
 
 const BoardOptions = (props: {
-  contextRef: any;
-  canvasRef: any;
   onChangeOptions: (options: CanvasOptions) => void;
+  clearCanvasHandler: () => void;
 }) => {
-  const { contextRef, canvasRef } = props;
-  const { roomID } = useParams();
-  const socket = useContext(SocketContext);
-
   const [drawingColor, setDrawingColor] = useState("red");
   const [lineWidth, setLineWidth] = useState(5);
-  const [lineOpacity, setLineOpacity] = useState(1);
 
   const changeColorHandler = (e: any) => {
     e.preventDefault();
@@ -37,21 +28,10 @@ const BoardOptions = (props: {
     setLineWidth(lineWidth);
   };
 
-  const changeLineOpacityHandler = (e: any) => {
-    e.preventDefault();
-    const lineOpacity = +e.target.value / 10;
-    setLineOpacity(lineOpacity);
-  };
-
-  const clearCanvasHandler = () => {
-    contextRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-    socket.emit("clear-canvas", roomID);
-  };
-
   useEffect(() => {
-    props.onChangeOptions({ drawingColor, lineOpacity, lineWidth });
+    props.onChangeOptions({ drawingColor, lineWidth });
     // eslint-disable-next-line
-  }, [drawingColor, lineOpacity, lineWidth]);
+  }, [drawingColor, lineWidth]);
 
   return (
     <div className={styles.options}>
@@ -71,11 +51,8 @@ const BoardOptions = (props: {
       <MiniMenu activateButtonContent={<LineWidthIcon></LineWidthIcon>}>
         <input type="range" min="2" max="15" value={lineWidth} onChange={changeLineWidthHandler} />
       </MiniMenu>
-      <MiniMenu activateButtonContent={<LineOpacityIcon></LineOpacityIcon>}>
-        <input type="range" min="1" max="10" value={lineOpacity * 10} onChange={changeLineOpacityHandler} />
-      </MiniMenu>
       <div>
-        <IconButton onClick={clearCanvasHandler}>
+        <IconButton onClick={props.clearCanvasHandler}>
           <TrashIcon></TrashIcon>
         </IconButton>
       </div>

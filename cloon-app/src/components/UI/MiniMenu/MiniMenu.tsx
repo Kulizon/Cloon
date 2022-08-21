@@ -5,7 +5,11 @@ import styles from "./MiniMenu.module.scss";
 
 import IconButton from "../IconButton/IconButton";
 
-const MiniMenu = (props: { children: ReactElement; activateButtonContent: ReactElement }) => {
+const MiniMenu = (props: {
+  children: ReactElement;
+  activateButtonContent: ReactElement;
+  deactivateButtonContent?: ReactElement;
+}) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   return (
@@ -29,7 +33,7 @@ const MiniMenu = (props: { children: ReactElement; activateButtonContent: ReactE
           setIsMenuVisible((prevState) => !prevState);
         }}
       >
-        {props.activateButtonContent}
+        {isMenuVisible && props.deactivateButtonContent ? props.deactivateButtonContent : props.activateButtonContent}
       </IconButton>
     </div>
   );
