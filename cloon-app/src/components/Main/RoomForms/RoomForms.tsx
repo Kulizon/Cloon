@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { SocketContext, PeerIDContext, StreamContext } from "../../../App";
 
@@ -12,43 +12,61 @@ const RoomForms = () => {
   const socket = useContext(SocketContext);
   const peerID = useContext(PeerIDContext);
   const userStream = useContext(StreamContext);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const createNewRoomHandler = (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault();
     if (!socket || !peerID) return;
 
-    socket.emit("new-room", socket.id);
-    socket.on("new-room", (roomID: string) => {
-      socket.emit("join-room", roomID, peerID);
+    try {
+      socket.emit("new-room", socket.id);
+      socket.on("new-room", (roomID: string) => {
+        socket.emit("join-room", roomID, peerID);
 
-      navigate(`room/${roomID}`);
-    });
+        navigate(`room/${roomID}`);
+      });
+    } catch (e) {
+      console.log(e);
+      setIsError(true);
+    }
   };
 
   const joinRandomRoomHandler = (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault();
     if (!socket || !peerID) return;
 
-    socket.emit("join-random-room");
-    socket.on("join-random-room", (randomRoomID: string) => {
-      socket.emit("join-room", randomRoomID, peerID);
-      navigate(`room/${randomRoomID}`);
-    });
+    try {
+      socket.emit("join-random-room");
+      socket.on("join-random-room", (randomRoomID: string) => {
+        socket.emit("join-room", randomRoomID, peerID);
+        navigate(`room/${randomRoomID}`);
+      });
+    } catch (e) {
+      console.log(e);
+      setIsError(true);
+    }
   };
 
   const joinRoomHandler = (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault();
     if (!socket || !peerID) return;
 
-    const roomID = ((e.target as unknown as HTMLElement[])[0] as HTMLInputElement).value;
+    const roomID = (
+      (e.target as unknown as HTMLElement[])[0] as HTMLInputElement
+    ).value;
 
-    socket.emit("join-room", roomID, peerID);
-    socket.on("full-room", () => {
-      alert("Room is full...");
-    });
-    socket.on("join-room", (roomID: string) => {
-      navigate(`room/${roomID}`);
-    });
+    try {
+      socket.emit("join-room", roomID, peerID);
+      socket.on("full-room", () => {
+        alert("Room is full...");
+      });
+      socket.on("join-room", (roomID: string) => {
+        navigate(`room/${roomID}`);
+      });
+    } catch (e) {
+      console.log(e);
+      setIsError(true);
+    }
   };
 
   return (
@@ -69,6 +87,7 @@ const RoomForms = () => {
       ) : (
         <h2>Please connect either audio or video device...</h2>
       )}
+      {isError && <span>Server error occured...</span>}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useState, useEffect, createContext } from "react";
 import { Routes, Route } from "react-router";
 import io, { Socket } from "socket.io-client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Peer from "peerjs";
 
 import "./App.scss";
@@ -18,6 +20,7 @@ const App = () => {
   const [socket, setSocket] = useState<Socket>();
   const [peerID, setPeerID] = useState<string>();
   const [stream, setStream] = useState<string>();
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     if (socket) return;
@@ -25,8 +28,13 @@ const App = () => {
     const connect = async () => {
       // http://localhost:4000
       // https://cloon.herokuapp.com/
-      const receivedSocket = await io("https://cloon.herokuapp.com/");
-      setSocket(receivedSocket);
+      try {
+        const receivedSocket = await io("http://localhost:4000");
+
+        setSocket(receivedSocket);
+      } catch (e) {
+        toast("Server error occured...");
+      }
     };
 
     connect();
@@ -44,7 +52,10 @@ const App = () => {
     const connectDevices = async () => {
       let stream: any = "";
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
       } catch (e) {
         console.log(e);
         try {
@@ -76,6 +87,7 @@ const App = () => {
               <Route path="/" element={<Main></Main>} />
               <Route path="/room/:roomID" element={<Room></Room>} />
             </Routes>
+            <ToastContainer />
           </SocketContext.Provider>
         </PeerIDContext.Provider>
       </StreamContext.Provider>
